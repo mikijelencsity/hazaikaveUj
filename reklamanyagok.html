@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reklámanyagaink — Hazai Kávé Kft.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --espresso: #3D2314;
+    --dark-roast: #5C3A2A;
+    --caramel: #A67C52;
+    --cream: #E8D4B8;
+    --foam: #F5EBE0;
+    --white: #FDF8F3;
+    --accent: #B8860B;
+    --accent-light: #D4A84B;
+    --text-dark: #2C1810;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--foam);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 60px;
+    backdrop-filter: blur(24px);
+    background: rgba(245,235,224,0.95);
+    border-bottom: 1px solid rgba(166,124,82,0.2);
+  }
+  .nav-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+  }
+  .nav-logo span { color: var(--text-dark); }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  .hamburger { display: none; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 30px; height: 2.5px; background: var(--text-dark); transition: 0.3s; }
+  }
+
+  /* HERO HEADER - nagyon extra */
+  .hero {
+    height: 100vh;
+    min-height: 820px;
+    background: linear-gradient(rgba(44,24,16,0.65), rgba(44,24,16,0.75)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(184,134,11,0.25), transparent 70%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+    padding: 0 20px;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(3.2rem, 8vw, 6.2rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+    color: white;
+    margin-bottom: 24px;
+  }
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+  .hero p {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.85);
+    max-width: 580px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(transparent, rgba(255,255,255,0.7), transparent);
+    animation: scrollAnim 2s infinite;
+  }
+  @keyframes scrollAnim {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(20px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* GALLERY CONTAINER */
+  .gallery-section {
+    padding: 140px 40px 160px;
+    max-width: 1680px;
+    margin: 0 auto;
+  }
+  .section-title {
+    text-align: center;
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 80px;
+    color: var(--text-dark);
+  }
+  .section-title span {
+    color: var(--accent);
+  }
+
+  /* MASONRY GALLERY - BRUTÁLIS & EXTRA */
+  .masonry-gallery {
+    columns: 4 380px;
+    column-gap: 28px;
+    width: 100%;
+  }
+  @media (max-width: 1200px) { .masonry-gallery { columns: 3 340px; } }
+  @media (max-width: 860px) { .masonry-gallery { columns: 2 320px; } }
+  @media (max-width: 560px) { .masonry-gallery { columns: 1; } }
+
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 28px;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(61,35,20,0.12);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .gallery-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .gallery-item:hover {
+    transform: scale(1.04) translateY(-12px);
+    box-shadow: 0 40px 90px rgba(61,35,20,0.25);
+    z-index: 10;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .gallery-item:hover img {
+    transform: scale(1.12);
+  }
+
+  /* OVERLAY INFO */
+  .gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(44,24,16,0.92));
+    padding: 48px 32px 32px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+  }
+  .gallery-overlay .tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(184,134,11,0.9);
+    padding: 4px 14px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .gallery-overlay h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .gallery-overlay p {
+    font-size: 0.92rem;
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(44,24,16,0.96);
+    backdrop-filter: blur(20px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .lightbox.active {
+    display: flex;
+  }
+  .lightbox-content {
+    max-width: 96%;
+    max-height: 96vh;
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  }
+  .lightbox-content img {
+    max-width: 100%;
+    max-height: 96vh;
+    display: block;
+    border-radius: 28px;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    z-index: 10;
+  }
+  .lightbox-close:hover {
+    background: var(--accent);
+    transform: rotate(90deg);
+  }
+  .lightbox-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    padding: 60px 40px 40px;
+    color: white;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--espresso);
+    color: var(--cream);
+    text-align: center;
+    padding: 60px 20px 40px;
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">HAZAI<span>KÁVÉ</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="kavegepek.html">Kávégépeink</a></li>
+    <li><a href="reklamanyagaink.html" class="active">Reklámanyagaink</a></li>
+    <li><a href="alapanyagok.html">Alapanyagok</a></li>
+    <li><a href="kapcsolat.html">Kapcsolat</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">BRUTÁLIS VIZUÁLIS VILÁG</div>
+    <h1>REKLÁM<br><span>ANYAGAINK</span></h1>
+    <p>Figyelemfelkeltő plakátok, szórólapok, social tartalmak, bannerek és merch — mindegyik úgy készült, hogy azonnal megállítsa az embereket és eladja a kávéélményt.</p>
+  </div>
+  <div class="scroll-hint">GÖRGETÉS</div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <h2 class="section-title">GALÉRIA<span>.</span></h2>
+  
+  <div class="masonry-gallery" id="masonryGallery">
+    <!-- JavaScript fogja feltölteni -->
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <button class="lightbox-close" id="closeLightbox">×</button>
+    <img id="lightboxImage" src="" alt="">
+    <div class="lightbox-info" id="lightboxInfo">
+      <!-- JS tölti meg -->
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 Hazai Kávé Kft. — Baja<br>
+  Minden reklámanyag kizárólag partnereink számára készült. Letöltés ingyenes.
+</footer>
+
+<script>
+const galleryItems = [
+  {
+    id: 1,
+    title: "Ingyenes Kávégép Kihelyezés",
+    category: "Plakát",
+    img: "https://picsum.photos/id/1015/1200/1600",
+    desc: "Nagy formátumú figyelemfelkeltő plakát A1-es méretben."
+  },
+  {
+    id: 2,
+    title: "Kávé & Szerelem",
+    category: "Social Media",
+    img: "https://picsum.photos/id/133/1200/1800",
+    desc: "Instagram és Facebook poszt sorozat – romantikus kávéhangulat."
+  },
+  {
+    id: 3,
+    title: "Professzionális Roll-up",
+    category: "Roll-up",
+    img: "https://picsum.photos/id/201/1000/1800",
+    desc: "2 méteres roll-up banner rendezvényekre és irodákba."
+  },
+  {
+    id: 4,
+    title: "Szórólap – Teljes Szolgáltatás",
+    category: "Szórólap",
+    img: "https://picsum.photos/id/251/1200/1400",
+    desc: "Kétoldalas A5 szórólap – minden szolgáltatás egy lapon."
+  },
+  {
+    id: 5,
+    title: "Kávé Automata Hirdetés",
+    category: "Banner",
+    img: "https://picsum.photos/id/318/1400/900",
+    desc: "Webes és nyomdai banner – erős konverziós üzenettel."
+  },
+  {
+    id: 6,
+    title: "Hazai Kávé Merch Pack",
+    category: "Merch",
+    img: "https://picsum.photos/id/870/1100/1600",
+    desc: "Logós bögre, póló, sapka és kulacs mockupok."
+  },
+  {
+    id: 7,
+    title: "Céges Esemény Plakát",
+    category: "Plakát",
+    img: "https://picsum.photos/id/1005/1200/1700",
+    desc: "Konferenciákra és céges napokra tervezett dizájn."
+  },
+  {
+    id: 8,
+    title: "Instagram Story Kollekció",
+    category: "Social",
+    img: "https://picsum.photos/id/29/1100/1900",
+    desc: "10 db kész, szerkeszthető Instagram Story sablon."
+  },
+  {
+    id: 9,
+    title: "30 mp Animált Videó",
+    category: "Video Thumbnail",
+    img: "https://picsum.photos/id/160/1400/800",
+    desc: "TikTok és Reels videó thumbnail + teljes videó."
+  },
+  {
+    id: 10,
+    title: "Irodai Kampány Banner",
+    category: "Banner",
+    img: "https://picsum.photos/id/201/1300/900",
+    desc: "Irodaházakba és közösségi terekbe optimalizált vizuál."
+  },
+  {
+    id: 11,
+    title: "Szezonális Karácsonyi Pack",
+    category: "Szezonális",
+    img: "https://picsum.photos/id/133/1200/1600",
+    desc: "Ünnepi dizájnok – limitált karácsonyi kampányhoz."
+  },
+  {
+    id: 12,
+    title: "Kávézók Hirdetése",
+    category: "Plakát",
+    img: "https://picsum.photos/id/251/1100/1700",
+    desc: "Vendéglátóhelyeknek készült egyedi plakát sorozat."
+  }
+];
+
+// Masonry gallery renderelés
+function renderMasonry() {
+  const container = document.getElementById('masonryGallery');
+  container.innerHTML = '';
+
+  galleryItems.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.style.animationDelay = `${index * 80}ms`;
+    
+    div.innerHTML = `
+      <img src="${item.img}" alt="${item.title}" loading="lazy">
+      <div class="gallery-overlay">
+        <div class="tag">${item.category}</div>
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
+      </div>
+    `;
+    
+    div.addEventListener('click', () => openLightbox(item));
+    container.appendChild(div);
+    
+    // Láthatóság animáció
+    setTimeout(() => {
+      div.classList.add('visible');
+    }, 100 + index * 60);
+  });
+}
+
+// Lightbox megnyitása
+function openLightbox(item) {
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImage');
+  const info = document.getElementById('lightboxInfo');
+  
+  img.src = item.img;
+  info.innerHTML = `
+    <div style="font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; opacity:0.7;">${item.category}</div>
+    <h2 style="font-family:'Unbounded',sans-serif; font-size:2rem; margin:12px 0 16px; letter-spacing:-0.03em;">${item.title}</h2>
+    <p style="max-width:520px; line-height:1.7;">${item.desc}</p>
+    <div style="margin-top:32px;">
+      <button onclick="fakeDownload()" style="background:var(--accent); color:#fff; border:none; padding:16px 36px; border-radius:999px; font-weight:700; letter-spacing:0.1em; cursor:pointer; transition:0.3s;">
+        📥 LETÖLTÉS INGYEN (300 DPI)
+      </button>
+    </div>
+  `;
+  
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Fake letöltés
+function fakeDownload() {
+  const btn = event.currentTarget;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '✅ LETÖLTVE!';
+  btn.style.background = '#3D2314';
+  
+  setTimeout(() => {
+    alert('🎉 Gratulálunk! A reklámanyag letöltve.\n\n(Ez egy demo oldal – valós fájlok a teljes weboldalon elérhetők)');
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }, 900);
+}
+
+// Lightbox bezárása
+document.getElementById('closeLightbox').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+});
+
+// ESC billentyű
+document.addEventListener('keydown', (e) => {
+  if (e.key === "Escape") {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// Hamburger menü (egyszerű)
+document.getElementById('hamburger').addEventListener('click', () => {
+  alert('Mobil menü – teljes verzióban itt nyílik a navigáció');
+});
+
+// Indítás
+window.onload = () => {
+  renderMasonry();
+};
+
+
+
+</script>
+</body>
+</html>
