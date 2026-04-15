@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kávé alapanyagok — Hazai Kávé Kft.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --espresso: #3D2314;
+    --cream: #E8D4B8;
+    --foam: #F5EBE0;
+    --accent: #B8860B;
+    --text-dark: #2C1810;
+    --text-medium: #4A3228;
+    --latte: #C9A87C;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(180deg, var(--foam) 0%, var(--cream) 50%, var(--latte) 100%);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    backdrop-filter: blur(20px);
+    background: rgba(245,235,224,0.95);
+    border-bottom: 1px solid rgba(166,124,82,0.2);
+  }
+  .nav-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900; font-size: 1.1rem;
+    color: var(--accent); text-decoration: none;
+  }
+  .nav-logo span { color: var(--text-dark); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.82rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px; }
+  .hamburger span { width: 28px; height: 3px; background: var(--text-dark); border-radius: 2px; }
+  .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--foam); padding: 20px; flex-direction: column; gap: 15px; z-index: 99; border-bottom: 1px solid rgba(166,124,82,0.2); }
+  .mobile-menu.active { display: flex; }
+  .mobile-menu a { color: var(--text-dark); text-decoration: none; font-weight: 500; padding: 10px 0; border-bottom: 1px solid rgba(166,124,82,0.1); }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    nav { padding: 15px 20px; }
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 160px 60px 80px;
+    text-align: center;
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    margin: 32px auto 0;
+    border-radius: 2px;
+  }
+  .page-header h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .page-header p {
+    color: var(--text-medium);
+    max-width: 520px;
+    margin: 0 auto;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  /* SECTION LABEL - CENTERED & LARGE */
+  .section-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 16px;
+    margin-top: 80px;
+  }
+  .section-heading {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 70px;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+  }
+
+  /* PRODUCT ROWS */
+  .products-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .product-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(184,134,11,0.18);
+    border-radius: 28px;
+    overflow: visible;
+    transition: box-shadow 0.3s;
+    position: relative;
+  }
+  .product-row:hover {
+    box-shadow: 0 12px 50px rgba(61,35,20,0.15);
+  }
+  .product-row:not(:last-child) {
+    margin-bottom: 50px;
+  }
+
+  .product-row.reverse .product-image { order: 2; }
+  .product-row.reverse .product-info  { order: 1; }
+
+  .product-image {
+    background: rgba(232,212,184,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+    padding: 40px;
+    border-right: 1px solid rgba(184,134,11,0.12);
+    border-radius: 28px 0 0 28px;
+    position: relative;
+    overflow: visible;
+  }
+  .product-row.reverse .product-image {
+    border-right: none;
+    border-left: 1px solid rgba(184,134,11,0.12);
+    border-radius: 0 28px 28px 0;
+  }
+  .product-image img {
+    width: 280px;
+    height: 380px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.4s ease;
+    position: relative;
+    z-index: 10;
+    margin-top: -60px;
+    margin-bottom: -40px;
+    filter: drop-shadow(0 20px 40px rgba(61,35,20,0.35));
+  }
+  .product-row:hover .product-image img {
+    transform: scale(1.05) translateY(-8px);
+  }
+
+  .product-info {
+    padding: 52px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .product-tag {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .product-info h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .product-desc {
+    color: var(--text-medium);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .product-detail-block {
+    border-top: 1px solid rgba(184,134,11,0.2);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.88rem;
+  }
+  .detail-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    min-width: 110px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .detail-value {
+    color: var(--text-medium);
+  }
+
+  .product-cta {
+    margin-top: 8px;
+  }
+  .product-cta a {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--espresso);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 50px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .product-cta a:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 860px) {
+    .product-row, .product-row.reverse {
+      grid-template-columns: 1fr;
+    }
+    .product-row.reverse .product-image { order: 0; }
+    .product-row.reverse .product-info  { order: 1; }
+    .product-image {
+      min-height: 320px;
+      border-right: none;
+      border-bottom: 1px solid rgba(184,134,11,0.12);
+      border-radius: 28px 28px 0 0;
+    }
+    .product-row.reverse .product-image {
+      border-left: none;
+      border-bottom: 1px solid rgba(184,134,11,0.12);
+      border-radius: 28px 28px 0 0;
+    }
+    .product-image img {
+      width: 280px;
+      height: 380px;
+      margin-top: -60px;
+      margin-bottom: -40px;
+    }
+    .product-info { padding: 36px 28px; }
+    .products-list { padding: 0 20px; }
+  }
+
+  /* ACCESSORIES */
+  .accessories-section {
+    max-width: 1100px;
+    margin: 80px auto 0;
+    padding: 0 60px 80px;
+  }
+  @media (max-width: 768px) {
+    .accessories-section { padding: 0 20px 60px; }
+  }
+
+  .acc-category {
+    margin-bottom: 48px;
+  }
+  .acc-category-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(184,134,11,0.25);
+  }
+  .acc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .acc-item {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(184,134,11,0.15);
+    border-radius: 14px;
+    padding: 20px 18px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .acc-item:hover {
+    border-color: rgba(184,134,11,0.4);
+    box-shadow: 0 4px 16px rgba(61,35,20,0.07);
+  }
+  .acc-item strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .acc-item span {
+    font-size: 0.78rem;
+    color: var(--text-medium);
+  }
+
+  .section-divider {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px;
+    border: none;
+    border-top: 1px solid rgba(184,134,11,0.2);
+  }
+
+  footer {
+    background: var(--espresso);
+    padding: 48px 60px;
+    text-align: center;
+    color: var(--cream);
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+  }
+  footer strong { color: var(--latte); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">HAZAI<span>KÁVÉ</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="kavegepek.html">Kávégépeink</a></li>
+    <li><a href="alapanyagok.html">Alapanyagok</a></li>
+    <li><a href="kapcsolat.html">Kapcsolat</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Főoldal</a>
+  <a href="kavegepek.html">Kávégépeink</a>
+  <a href="alapanyagok.html">Alapanyagok</a>
+  <a href="kapcsolat.html">Kapcsolat</a>
+</div>
+
+<div class="page-header">
+  <h1>Kávé alapanyagok</h1>
+  <p>Prémium kávéink és kiegészítőink — minden, ami a tökéletes kávéélményhez kell.</p>
+</div>
+
+<div class="section-label">Kínálatunk</div>
+<div class="section-heading">Kávéink</div>
+
+<div class="products-list">
+
+  <div class="product-row">
+    <div class="product-image">
+      <img src="data:image/png;base64,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" alt="Corso Verona Ristorante">
+    </div>
+    <div class="product-info">
+      <div class="product-tag">Prémium kávé</div>
+      <h3>Corso Verona Ristorante</h3>
+      <p class="product-desc">
+        Sötét, olasz pörkölésű kávé, amely gazdag cremaval és intenzív ízvilággal kényezteti az érzékeket. Kakaós, étcsokoládés és pörkölt magvas jegyek természetes édességgel párosulva.
+      </p>
+      <div class="product-detail-block">
+        <div class="detail-row">
+          <span class="detail-label">Ízjegyek</span>
+          <span class="detail-value">Kakaó, étcsokoládé, pörkölt mag</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Pörkölés</span>
+          <span class="detail-value">Sötét, olasz stílus</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Crema</span>
+          <span class="detail-value">Bőséges, tartós</span>
+        </div>
+      </div>
+      <div class="product-cta"><a href="kapcsolat.html">Ajánlatot kérek</a></div>
+    </div>
+  </div>
+
+  <div class="product-row reverse">
+    <div class="product-image">
+      <img src="https://hazaikave.hu/wp-content/uploads/2025/09/2.png" alt="Corso Verona Virtuoso">
+    </div>
+    <div class="product-info">
+      <div class="product-tag">Prémium kávé</div>
+      <h3>Corso Verona Virtuoso</h3>
+      <p class="product-desc">
+        A kifinomultság és elegancia megtestesítője. Olasz stílus, művészi precizitás és magas minőség találkozása egyetlen csészében — azok számára, akik nem kevesebbet fogadnak el a tökéletessel.
+      </p>
+      <div class="product-detail-block">
+        <div class="detail-row">
+          <span class="detail-label">Stílus</span>
+          <span class="detail-value">Olasz, elegáns</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Jelleg</span>
+          <span class="detail-value">Kifinomult, művészi precizitás</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Minőség</span>
+          <span class="detail-value">Prémium kategória</span>
+        </div>
+      </div>
+      <div class="product-cta"><a href="kapcsolat.html">Ajánlatot kérek</a></div>
+    </div>
+  </div>
+
+  <div class="product-row">
+    <div class="product-image">
+      <img src="https://hazaikave.hu/wp-content/uploads/2025/09/3.png" alt="Caffè Perla Rosso">
+    </div>
+    <div class="product-info">
+      <div class="product-tag">Prémium kávékeverék</div>
+      <h3>Caffè Perla Rosso</h3>
+      <p class="product-desc">
+        Gondosan összeállított prémium kávékeverék, amelyben mosott arabica és brazil aromák találkoznak. Az indiai robuszta fajta adja azt a gazdag, tartós cremát, amely minden kávét teljessé tesz.
+      </p>
+      <div class="product-detail-block">
+        <div class="detail-row">
+          <span class="detail-label">Összetétel</span>
+          <span class="detail-value">Arabica, brazil, indiai robuszta</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Feldolgozás</span>
+          <span class="detail-value">Mosott arabica</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Crema</span>
+          <span class="detail-value">Gazdag, tartós</span>
+        </div>
+      </div>
+      <div class="product-cta"><a href="kapcsolat.html">Ajánlatot kérek</a></div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="section-divider" style="margin-top:80px;">
+
+<div class="section-label" style="margin-top:60px;">Kiegészítők</div>
+<div class="section-heading">Tartozékok</div>
+
+<div class="accessories-section">
+
+  <div class="acc-category">
+    <div class="acc-category-title">Fa lapkák</div>
+    <div class="acc-grid">
+      <div class="acc-item"><strong>Fa Lapka 105 mm</strong><span>75 db / csomag</span></div>
+      <div class="acc-item"><strong>Fa Lapka 90 mm</strong><span>50 db / csomag</span></div>
+      <div class="acc-item"><strong>Fa Lapka 140 mm</strong><span>1000 db / csomag</span></div>
+    </div>
+  </div>
+
+  <div class="acc-category">
+    <div class="acc-category-title">Poharak</div>
+    <div class="acc-grid">
+      <div class="acc-item"><strong>Műanyag pohár 1 dl</strong><span>50 db / csomag</span></div>
+      <div class="acc-item"><strong>Műanyag pohár 150 ml</strong><span>100 db / csomag</span></div>
+      <div class="acc-item"><strong>Papírpohár 180 ml</strong><span>50 db / csomag</span></div>
+      <div class="acc-item"><strong>Coffee to go 200 ml</strong><span>50 db / csomag</span></div>
+    </div>
+  </div>
+
+  <div class="acc-category">
+    <div class="acc-category-title">Cukorrudak</div>
+    <div class="acc-grid">
+      <div class="acc-item"><strong>Cukor rúd C.V. 4g</strong><span>1000 db / csomag</span></div>
+      <div class="acc-item"><strong>Cukor rúd Perla 4g</strong><span>1000 db / csomag</span></div>
+      <div class="acc-item"><strong>Cukor rúd CV Barna 4g</strong><span>1000 db / csomag</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Hazai Kávé Kft.</strong> — Baja &nbsp;&middot;&nbsp; © 2025 Minden jog fenntartva.
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('active');
+}
+</script>
+</body>
+</html>
