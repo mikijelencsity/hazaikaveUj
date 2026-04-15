@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preloader — Hazai Kávé Kft.</title>
+<link rel="stylesheet" href="./css/preloader.css">
+</head>
+<body style="margin:0;background:#0d0604;">
+
+<!-- ════════════════════════════════════════════════
+     PRELOADER MARKUP
+════════════════════════════════════════════════ -->
+<div id="preloader">
+  <canvas id="pl-canvas"></canvas>
+
+  <!-- Steam threads (absolute, positioned by JS) -->
+  <div id="pl-steams"></div>
+
+  <div id="pl-center">
+    <!-- Coffee bean SVG -->
+    <img id="pl-bean" src="/assets/logo.png" alt="Hazai Kávé logó">
+
+    <!-- Logo chars injected by JS -->
+    <div id="pl-logo"><img src="/assets/logo.png" alt="" srcset=""></div>
+
+    <!-- Tagline -->
+    <div id="pl-tagline">Bearanyozzuk a napod!</div>
+  </div>
+
+  <!-- Progress -->
+  <div id="pl-bar-wrap">
+    <div id="pl-bar-track"><div id="pl-bar-fill"></div></div>
+    <div id="pl-pct">0%</div>
+  </div>
+</div>
+
+ <!-- Tartalom ide jön -->
+
+<script src="/js/preloader.js"></script>
+
+</body>
+</html>
